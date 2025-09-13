@@ -88,7 +88,7 @@ signUp.addEventListener("click", (event) => {
       });
 
       // ✅ Redirect to homepage after successful signup and login
-      window.location.href = `https://lilalin808.github.io/new-quiz/homepage.html?uid=${id}`; // replace with your actual homepage
+      window.location.href = `https://ucsf-vrlab.github.io/quizzes/homepage.html?uid=${id}`; // replace with your actual homepage
     })
     .catch((error) => {
       console.error("Signup error:", error);
@@ -133,7 +133,7 @@ signIn.addEventListener("click", async (event) => {
       console.log("👤 User document already exists.");
     }
 
-    window.location.href = `https://lilalin808.github.io/new-quiz/homepage.html?uid=${id}`; // replace with your actual homepage
+    window.location.href = `https://ucsf-vrlab.github.io/quizzes/homepage.html?uid=${id}`; // replace with your actual homepage
   } catch (error) {
     console.error("❌ Sign-in error:", error);
     showMessage("Login failed: " + error.message, "signInMessage");
