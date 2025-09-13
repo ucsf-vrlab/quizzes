@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Study Attempts Dashboard</title>
+    <script type="module" src="test.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      table {
+        border-collapse: collapse;
+        margin: 10px 0;
+        width: 100%;
+      }
+      th,
+      td {
+        padding: 8px;
+        border: 1px solid #ccc;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Study Attempts Dashboard</h1>
+
+    <form id="login-form">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Sign In</button>
+    </form>
+
+    <p id="message"></p>
+
+    <div style="margin-top: 10px">
+      <button id="signout-button" style="display: none">Sign Out</button>
+
+      <select id="view-mode" style="display: none; margin-left: 10px">
+        <option value="by-user">Group by User</option>
+        <option value="all-attempts">All Attempts (Newest First)</option>
+      </select>
+
+      <input
+        type="text"
+        id="search-input"
+        placeholder="Search by course/quiz type..."
+        style="margin-left: 10px; padding: 5px"
+      />
+    </div>
+
+    <div id="study-results"></div>
+  </body>
+</html>

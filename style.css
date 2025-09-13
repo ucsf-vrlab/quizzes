@@ -1,0 +1,154 @@
+* {
+  background-color: #ffffff;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+/* Quiz container with scrolling */
+.quiz-container {
+  width: 400px;
+  height: 500px;
+  margin: 50px auto;
+  background: white;
+  border: 1px solid #ccc;
+  overflow: auto; /* Enables internal scrolling */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+#content {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.footer {
+  text-align: center;
+  margin-bottom: 75px;
+}
+
+#api-frame {
+  margin: 20px;
+  margin-left: 75px;
+  border-radius: 1px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 400px;
+}
+
+#quiz-container {
+  margin: 10px;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 7px;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+  min-width: 500px;
+}
+
+#question {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+#options {
+  display: block;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 10px;
+  font-size: 1.5rem;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+}
+
+.option-label:hover {
+  background-color: #f1f1f1;
+}
+
+.option-label input[type="radio"] {
+  margin-right: 12px;
+  accent-color: #007bff;
+}
+.option-letter {
+  font-weight: bold;
+  margin-right: 8px;
+  color: #333;
+}
+.answer-option {
+  padding: 12px 18px;
+  font-size: 1rem;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.answer-option:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.answer-option:disabled {
+  background-color: #d3d3d3;
+  cursor: not-allowed;
+}
+
+button {
+  font-size: 1rem;
+  padding: 10px 20px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  background-color: #114fab;
+  color: white;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#restart {
+  margin-top: 10px;
+  background-color: #6c757d;
+}
+
+#restart:hover {
+  background-color: #495057;
+}
+
+#result {
+  font-size: 1.1rem;
+  color: #28a745;
+  margin-bottom: 15px;
+}

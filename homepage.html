@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sketchfab Viewer API example</title>
+    <script
+      type="text/javascript"
+      src="https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js"
+    ></script>
+    <link rel="stylesheet" href="style.css" />
+    <meta
+      http-equiv="Permissions-Policy"
+      content="accelerometer=*; gyroscope=*; magnetometer=*; ambient-light-sensor=*; xr-spatial-tracking=*"
+    />
+  </head>
+  <body>
+    <div class="page-container">
+      <div id="content">
+        <iframe
+          id="api-frame"
+          width="800"
+          height="500"
+          frameborder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; xr-spatial-tracking"
+          allowfullscreen
+        ></iframe>
+
+        <div class="quiz-container" id="quiz-container" style="display: none">
+          <h2 id="question"></h2>
+          <div id="options"></div>
+          <p id="result"></p>
+          <button id="end-button">Complete Quiz</button>
+          <button id="restart" style="display: none">Take Quiz Again</button>
+        </div>
+      </div>
+      <div class="footer">
+        <button id="home-button">Return to Home</button>
+
+        <button id="logout-button">Logout</button>
+      </div>
+    </div>
+    <div class="container">
+      <form
+        method="POST"
+        target="_blank"
+        action="https://script.google.com/macros/s/AKfycbwLetCncysoHbZcR-148F3TfkrreENy4vzXkWy1ydXLHd9h5df68wayNDBVm9cvNqb9/exec"
+        name="contact-form"
+        onsubmit="console.log('Submitting...');"
+        id="form"
+      ></form>
+    </div>
+    <script type="module" src="homepage.js"></script>
+  </body>
+</html>

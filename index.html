@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register & Login</title>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" />
+    <script type="module" src="index.js"></script>
+  </head>
+  <body>
+    <body></body>
+
+    <div class="container" id="signup" style="display: none">
+      <h1 class="form-title">Sign Up</h1>
+      <p>Sign up to save and view progress</p>
+      <p id="required">* indicates a required field</p>
+      <form method="post" action="">
+        <div id="signUpMessage" class="messageDiv" style="display: none"></div>
+
+        <div class="input-group">
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="rEmail" placeholder="* Email" />
+        </div>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input
+            type="password"
+            id="rPassword"
+            placeholder="* Password"
+            required
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="educationLevel">Level of Education:</label>
+          <select id="educationLevel" required>
+            <option value="">-- Select Option --</option>
+            <option value="highschool">High School</option>
+            <option value="bachelor">Bachelor's Degree</option>
+            <option value="master">Master's Degree</option>
+            <option value="phd">Doctorate / PhD</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <input type="email" id="country" placeholder="Country of residence" />
+        </div>
+
+        <div class="input-group">
+          <label for="learningType">Learning Type:</label>
+          <select id="learningType">
+            <option value="">-- Select Option --</option>
+            <option value="self">Self-directed</option>
+            <option value="course">Course</option>
+          </select>
+        </div>
+
+        <div class="input-group" id="courseNameGroup" style="display: none">
+          <input type="text" id="courseName" placeholder="Enter Course Name" />
+        </div>
+
+        <button class="btn" id="submitSignUp">Sign Up</button>
+      </form>
+      <p class="or">--------or--------</p>
+
+      <div class="links">
+        <p>Already Have Account?</p>
+        <button id="signInButton">Sign In</button>
+      </div>
+    </div>
+
+    <div class="container" id="signIn">
+      <h1 class="form-title">Sign In</h1>
+      <p>Sign in to save and view progress</p>
+      <form method="post" action="">
+        <div id="signInMessage" class="messageDiv" style="display: none"></div>
+
+        <div class="input-group">
+          <i class="fas fa-envelope"></i>
+          <input type="text" id="email" placeholder="Email" required />
+        </div>
+
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            required
+          />
+        </div>
+
+        <button class="btn" id="submitSignIn">Sign In</button>
+      </form>
+      <p class="or">--------or--------</p>
+
+      <div class="links">
+        <p>Don't have an account yet?</p>
+        <button id="signUpButton">Sign Up</button>
+      </div>
+    </div>
+
+    <script>
+      const signUpButton = document.getElementById("signUpButton");
+      const signInButton = document.getElementById("signInButton");
+      const signInForm = document.getElementById("signIn");
+      const signUpForm = document.getElementById("signup");
+
+      signUpButton.addEventListener("click", function () {
+        signInForm.style.display = "none";
+        signUpForm.style.display = "block";
+      });
+
+      signInButton.addEventListener("click", function () {
+        signInForm.style.display = "block";
+        signUpForm.style.display = "none";
+      });
+
+      signInForm.style.display = "block";
+      signUpForm.style.display = "none";
+    </script>
+  </body>
+</html>
