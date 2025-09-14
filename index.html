@@ -47,17 +47,8 @@
           <input type="email" id="country" placeholder="Country of residence" />
         </div>
 
-        <div class="input-group">
-          <label for="learningType">Learning Type:</label>
-          <select id="learningType">
-            <option value="">-- Select Option --</option>
-            <option value="self">Self-directed</option>
-            <option value="course">Course</option>
-          </select>
-        </div>
-
-        <div class="input-group" id="courseNameGroup" style="display: none">
-          <input type="text" id="courseName" placeholder="Enter Course Name" />
+         <div class="input-group">
+          <input type="text" id="courseNumber" placeholder="Course Number" />
         </div>
 
         <button class="btn" id="submitSignUp">Sign Up</button>
@@ -98,6 +89,9 @@
       <div class="links">
         <p>Don't have an account yet?</p>
         <button id="signUpButton">Sign Up</button>
+        <p>Forgot Password?</p>
+        <button id="forgotButton">Reset Password</button>
+    
       </div>
     </div>
 
@@ -106,15 +100,31 @@
       const signInButton = document.getElementById("signInButton");
       const signInForm = document.getElementById("signIn");
       const signUpForm = document.getElementById("signup");
+      const forgotForm = document.getElementById("reset");
+
+      const forgotButton = document.getElementById("forgotButton");
+      const rememberButton = document.getElementById("rememberButton");
 
       signUpButton.addEventListener("click", function () {
         signInForm.style.display = "none";
         signUpForm.style.display = "block";
       });
 
+      forgotButton.addEventListener("click", function () {
+        signInForm.style.display = "none";
+        signUpForm.style.display = "none";
+        forgotForm.style.display = "block";
+      });
+
       signInButton.addEventListener("click", function () {
         signInForm.style.display = "block";
         signUpForm.style.display = "none";
+        forgotForm.style.display = "none";
+      });
+      rememberButton.addEventListener("click", function () {
+        signInForm.style.display = "block";
+        signUpForm.style.display = "none";
+        forgotForm.style.display = "none";
       });
 
       signInForm.style.display = "block";
