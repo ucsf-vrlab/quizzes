@@ -9,8 +9,6 @@
     <script type="module" src="index.js"></script>
   </head>
   <body>
-    <body></body>
-
     <div class="container" id="signup" style="display: none">
       <h1 class="form-title">Sign Up</h1>
       <p>Sign up to save and view progress</p>
@@ -47,7 +45,7 @@
           <input type="email" id="country" placeholder="Country of residence" />
         </div>
 
-         <div class="input-group">
+        <div class="input-group">
           <input type="text" id="courseNumber" placeholder="Course Number" />
         </div>
 
@@ -91,18 +89,21 @@
         <button id="signUpButton">Sign Up</button>
         <p>Forgot Password?</p>
         <button id="forgotButton">Reset Password</button>
-    
       </div>
     </div>
 
-     <div class="container" id="reset" style="display: none">
+    <div class="container" id="reset" style="display: none">
       <h1 class="form-title">Reset Password</h1>
       <p>Enter your email to reset your password</p>
       <form id="resetForm">
-  <input type="email" id="resetEmail" placeholder="Enter your email" required />
-  <button type="submit">Reset Password</button>
-</form>
-
+        <input
+          type="email"
+          id="resetEmail"
+          placeholder="Enter your email"
+          required
+        />
+        <button type="submit" id="submitReset">Reset Password</button>
+      </form>
 
       <p class="or">--------or--------</p>
 
@@ -113,33 +114,16 @@
     </div>
 
     <script>
-
       const signUpButton = document.getElementById("signUpButton");
       const signInButton = document.getElementById("signInButton");
       const signInForm = document.getElementById("signIn");
       const signUpForm = document.getElementById("signup");
-      const forgotForm = document.getElementById("resetForm");
+
+      const resetContainer = document.getElementById("reset"); // not resetForm
+      const resetForm = document.getElementById("resetForm");
 
       const forgotButton = document.getElementById("forgotButton");
       const rememberButton = document.getElementById("rememberButton");
-
-      import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-
-const auth = getAuth();
-
-resetForm.addEventListener("submit", async (e) => {
-  e.preventDefault(); // ✅ stop the form from posting to GitHub Pages
-
-  const email = document.getElementById("resetEmail").value;
-  try {
-    await sendPasswordResetEmail(auth, email);
-    alert("Password reset email sent!");
-  } catch (error) {
-    console.error("Error sending reset email:", error);
-    alert(error.message);
-  }
-});
-
 
       signUpButton.addEventListener("click", function () {
         signInForm.style.display = "none";
@@ -147,9 +131,10 @@ resetForm.addEventListener("submit", async (e) => {
       });
 
       forgotButton.addEventListener("click", function () {
+        console.log("clicked");
         signInForm.style.display = "none";
         signUpForm.style.display = "none";
-        forgotForm.style.display = "block";
+        resetContainer.style.display = "block";
       });
 
       signInButton.addEventListener("click", function () {
@@ -160,7 +145,7 @@ resetForm.addEventListener("submit", async (e) => {
       rememberButton.addEventListener("click", function () {
         signInForm.style.display = "block";
         signUpForm.style.display = "none";
-        forgotForm.style.display = "none";
+        resetContainer.style.display = "none";
       });
 
       signInForm.style.display = "block";
