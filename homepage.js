@@ -309,11 +309,9 @@ function notifyEmail(attemptData, userEmail) {
     .then((res) => res.text())
     .then((result) => {
       console.log("Email sent:", result);
-      alert("✅ Email sent successfully!");
     })
     .catch((err) => {
       console.error("Error sending email:", err);
-      alert("❌ Failed to send email.");
     });
 }
 
