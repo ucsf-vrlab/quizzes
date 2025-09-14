@@ -356,7 +356,7 @@ document
   .getElementById("end-button")
   .addEventListener("click", () => showScore());
 
-function showScore() {
+async function showScore() {
   const end = document.getElementById("end-button");
   end.style.display = "none";
   const totalQuestions = questions.length;
@@ -402,24 +402,28 @@ function showScore() {
   // Firestore/form submission
   const urlParams = new URLSearchParams(window.location.search);
   const quizType = urlParams.get("uid") || "2976f868447f433bbec2a3a53c71ab99";
-
+  const courseNum = "not set";
   finalizeCurrentAttempt(currentUserId, quizName);
 
+  const docRef = doc(db, "users", currentUserId);
+  const docSnap = await getDoc(docRef);
 
-      const docRef = doc(db, "users", currentUserId);
-      const docSnap = getDoc(docRef);
+  if (docSnap.exists()) {
+    const data = docSnap.data();
+    courseNum=data.courseType;
+    console.log("courseType:", data.courseType || "not set");
+    } else {
+    console.warn("No coursenum doc found");
+  }
 
-    
-        const data = docSnap.data();
-        console.log("courseType:", data.courseType || "not set");
-     
+
 
   const form = document.getElementById("form");
   form.innerHTML = `
     <input type="hidden" name="modelId" value="${quizType}" />
     <input type="hidden" name="user" value="${currentUserId}" />
     <input type="hidden" name="score" value="${score}/${totalQuestions}" />
-    <input type="hidden" name="course" value="${data.courseType}" />
+    <input type="hidden" name="course" value="${courseNum}" />
 
   `;
   form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
