@@ -407,7 +407,7 @@ function showScore() {
 
 
       const docRef = doc(db, "users", currentUserId);
-      const docSnap = await getDoc(docRef);
+      const docSnap = getDoc(docRef);
 
     
         const data = docSnap.data();
