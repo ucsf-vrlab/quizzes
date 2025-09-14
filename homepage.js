@@ -409,7 +409,7 @@ function showScore() {
   const docSnap = getDoc(docRef);
   const courseNum = docSnap.courseType || "not set";
 
-  console.log("courseType:", data.courseType || "not set");
+  console.log("courseType:", courseNum );
 
   const form = document.getElementById("form");
   form.innerHTML = `
