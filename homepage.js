@@ -405,11 +405,19 @@ function showScore() {
 
   finalizeCurrentAttempt(currentUserId, quizName);
 
+  const docRef = doc(db, "users", currentUserId);
+  const docSnap = getDoc(docRef);
+  const courseNum = docSnap.courseType || "not set";
+
+  console.log("courseType:", data.courseType || "not set");
+
   const form = document.getElementById("form");
   form.innerHTML = `
     <input type="hidden" name="modelId" value="${quizType}" />
     <input type="hidden" name="user" value="${currentUserId}" />
     <input type="hidden" name="score" value="${score}/${totalQuestions}" />
+    <input type="hidden" name="course" value="${courseNum}" />
+
   `;
   form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
 }
