@@ -98,16 +98,11 @@
      <div class="container" id="reset" style="display: none">
       <h1 class="form-title">Reset Password</h1>
       <p>Enter your email to reset your password</p>
-      <form method="post" action="">
-        <div id="resetMessage" class="messageDiv" style="display: none"></div>
+      <form id="resetForm">
+  <input type="email" id="resetEmail" placeholder="Enter your email" required />
+  <button type="submit">Reset Password</button>
+</form>
 
-        <div class="input-group">
-          <i class="fas fa-envelope"></i>
-          <input type="email" id="resetEmail" placeholder="Email" required />
-        </div>
-
-        <button class="btn" id="submitReset">Send Reset Link</button>
-      </form>
 
       <p class="or">--------or--------</p>
 
