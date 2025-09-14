@@ -3,6 +3,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
   setPersistence,
   browserLocalPersistence,
 } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
@@ -52,17 +53,7 @@ function showMessage(message, divId) {
   }, 5000);
 }
 
-const learningType = document.getElementById("learningType");
-const courseNameGroup = document.getElementById("courseNameGroup");
-
-learningType.addEventListener("change", function () {
-  if (learningType.value === "course") {
-    courseNameGroup.style.display = "block";
-  } else {
-    courseNameGroup.style.display = "none";
-    courseNameGroup.value = "self-directed";
-  }
-});
+const courseNumber = document.getElementById("courseNumber");
 
 // ✅ Wrap in DOMContentLoaded
 const signUp = document.getElementById("submitSignUp");
@@ -74,7 +65,7 @@ signUp.addEventListener("click", (event) => {
   const password = document.getElementById("rPassword").value;
   const level = document.getElementById("educationLevel").value;
   const country = document.getElementById("country").value;
-  const type = courseName.value;
+  const type = courseNumber.value;
 
   createUserWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
@@ -137,5 +128,34 @@ signIn.addEventListener("click", async (event) => {
   } catch (error) {
     console.error("❌ Sign-in error:", error);
     showMessage("Login failed: " + error.message, "signInMessage");
+  }
+});
+
+const reset = document.getElementById("submitReset");
+
+reset.addEventListener("click", (event) => {
+  event.preventDefault();
+
+  const email = document.getElementById("resetEmail").value;
+  sendPasswordResetEmail(auth, email)
+    .then(() => {
+      showMessage("Password reset email sent!", "resetMessage");
+    })
+    .catch((error) => {
+      console.error("Error sending password reset email:", error);
+      showMessage("Error: " + error.message, "resetMessage");
+    });
+});
+
+resetForm.addEventListener("submit", async (e) => {
+  e.preventDefault(); // ✅ stop the form from posting to GitHub Pages
+
+  const email = document.getElementById("resetEmail").value;
+  try {
+    await sendPasswordResetEmail(auth, email);
+    alert("Password reset email sent!");
+  } catch (error) {
+    console.error("Error sending reset email:", error);
+    alert(error.message);
   }
 });
