@@ -402,7 +402,7 @@ async function showScore() {
   // Firestore/form submission
   const urlParams = new URLSearchParams(window.location.search);
   const quizType = urlParams.get("uid") || "2976f868447f433bbec2a3a53c71ab99";
-  const courseNum = "not set";
+  var courseNum = "not set";
   finalizeCurrentAttempt(currentUserId, quizName);
 
   const docRef = doc(db, "users", currentUserId);
