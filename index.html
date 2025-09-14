@@ -113,14 +113,33 @@
     </div>
 
     <script>
+
       const signUpButton = document.getElementById("signUpButton");
       const signInButton = document.getElementById("signInButton");
       const signInForm = document.getElementById("signIn");
       const signUpForm = document.getElementById("signup");
-      const forgotForm = document.getElementById("reset");
+      const forgotForm = document.getElementById("resetForm");
 
       const forgotButton = document.getElementById("forgotButton");
       const rememberButton = document.getElementById("rememberButton");
+
+      import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+
+const auth = getAuth();
+
+resetForm.addEventListener("submit", async (e) => {
+  e.preventDefault(); // ✅ stop the form from posting to GitHub Pages
+
+  const email = document.getElementById("resetEmail").value;
+  try {
+    await sendPasswordResetEmail(auth, email);
+    alert("Password reset email sent!");
+  } catch (error) {
+    console.error("Error sending reset email:", error);
+    alert(error.message);
+  }
+});
+
 
       signUpButton.addEventListener("click", function () {
         signInForm.style.display = "none";
