@@ -292,6 +292,31 @@ async function saveCurrentAttempt(userId, quizName, score) {
   );
 }
 
+function notifyEmail(attemptData, userEmail) {
+  const url =
+    "https://script.google.com/macros/s/AKfycbxiUdjRooblf8Y-NlSR-bmJjYPN-Aa3qtWW3U6_uMQ-rhyGva5-dBnmi56k92OoJKqn/exec";
+
+  const formData = new FormData();
+  formData.append("to", userEmail || "fallback@example.com");
+  formData.append("subject", "New Past Attempt");
+  formData.append("message", attemptData);
+
+  // ✅ send without leaving the page
+  fetch(url, {
+    method: "POST",
+    body: formData,
+  })
+    .then((res) => res.text())
+    .then((result) => {
+      console.log("Email sent:", result);
+      alert("✅ Email sent successfully!");
+    })
+    .catch((err) => {
+      console.error("Error sending email:", err);
+      alert("❌ Failed to send email.");
+    });
+}
+
 async function finalizeCurrentAttempt(userId, quizName) {
   const currentRef = doc(
     db,
@@ -333,6 +358,34 @@ async function finalizeCurrentAttempt(userId, quizName) {
       finalizedAt: serverTimestamp(),
     });
 
+    try {
+      const docRef = doc(db, "users", userId);
+      const docSnap = await getDoc(docRef);
+      const emailContent = `
+      Hello,
+      
+      Here are the results of your quiz:
+      
+      ✅ Correct: ${correct}
+      ❌ Incorrect: ${incorrect}
+      ❓ Unanswered: ${unanswered}
+      
+      Your total score: ${correct} / ${correct + incorrect + unanswered}
+      
+      Thank you for completing the quiz!
+      `;
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        console.log("Full user doc:", data);
+        console.log("email:", data.email || "not set");
+        notifyEmail(emailContent, data.email);
+      } else {
+        console.warn("No document found for user:", currentUserId);
+      }
+    } catch (error) {
+      console.error("Error fetching user document:", error);
+    }
+    
     // Clear current attempt
     await deleteDoc(currentRef);
 
