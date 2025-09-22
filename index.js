@@ -9,7 +9,11 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
 import {
   getFirestore,
+  collection,
   doc,
+  query,
+  where,
+  getDocs,
   getDoc,
   setDoc,
   serverTimestamp,
@@ -131,31 +135,36 @@ signIn.addEventListener("click", async (event) => {
   }
 });
 
-const reset = document.getElementById("submitReset");
-
-reset.addEventListener("click", (event) => {
-  event.preventDefault();
-
-  const email = document.getElementById("resetEmail").value;
-  sendPasswordResetEmail(auth, email)
-    .then(() => {
-      showMessage("Password reset email sent!", "resetMessage");
-    })
-    .catch((error) => {
-      console.error("Error sending password reset email:", error);
-      showMessage("Error: " + error.message, "resetMessage");
-    });
-});
+const resetForm = document.getElementById("resetForm");
 
 resetForm.addEventListener("submit", async (e) => {
-  e.preventDefault(); // ✅ stop the form from posting to GitHub Pages
+  e.preventDefault();
 
-  const email = document.getElementById("resetEmail").value;
+  const email = document
+    .getElementById("resetEmail")
+    .value.trim()
+    .toLowerCase();
+
+  if (!email) {
+    showMessage("❌ Please enter an email address.", "resetMessage");
+    return;
+  }
+
   try {
+    // Check Firestore users collection for the email
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      showMessage("❌ No account found with that email.", "resetMessage");
+      return;
+    }
+
+    // Email exists in Firestore, now send password reset email
     await sendPasswordResetEmail(auth, email);
-    alert("Password reset email sent!");
+    showMessage("✅ Password reset email sent!", "resetMessage");
   } catch (error) {
-    console.error("Error sending reset email:", error);
-    alert(error.message);
+    showMessage("❌ Error: " + error.message, "resetMessage");
   }
 });
