@@ -449,6 +449,10 @@ async function showScore() {
   const urlParams = new URLSearchParams(window.location.search);
   const quizType = urlParams.get("uid") || "2976f868447f433bbec2a3a53c71ab99";
   var courseNum = "not set";
+  const email = "not set";
+  const level = "not set";
+  const location = "not set";
+  const institution = "not set";
   finalizeCurrentAttempt(currentUserId, quizName);
 
   const docRef = doc(db, "users", currentUserId);
@@ -457,6 +461,10 @@ async function showScore() {
   if (docSnap.exists()) {
     const data = docSnap.data();
     courseNum=data.courseType;
+   email = docSnap.email || "not set";
+   level = docSnap.education || "not set";
+   location = docSnap.country || "not set";
+   institution = docSnap.institution || "not set";
     console.log("courseType:", data.courseType || "not set");
     } else {
     console.warn("No coursenum doc found");
@@ -467,9 +475,12 @@ async function showScore() {
   const form = document.getElementById("form");
   form.innerHTML = `
     <input type="hidden" name="modelId" value="${quizName}" />
-    <input type="hidden" name="user" value="${currentUserId}" />
+    <input type="hidden" name="email" value="${email}" />
     <input type="hidden" name="score" value="${score}/${totalQuestions}" />
     <input type="hidden" name="course" value="${courseNum}" />
+    <input type="hidden" name="level" value="${level}" />
+    <input type="hidden" name="location" value="${location}" />
+    <input type="hidden" name="institution" value="${institution}" />
 
   `;
   form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
