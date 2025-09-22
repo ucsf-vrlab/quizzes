@@ -407,7 +407,6 @@ async function showScore() {
   end.style.display = "none";
   const totalQuestions = questions.length;
 
-  // Fill in unanswered questions
   for (let i = 0; i < totalQuestions; i++) {
     if (!questionResults[i]) {
       questionResults[i] = { index: i, status: "unanswered" };
@@ -422,12 +421,8 @@ async function showScore() {
   });
 
   const correct = questionResults.filter((r) => r.status === "correct").length;
-  const incorrect = questionResults.filter(
-    (r) => r.status === "incorrect"
-  ).length;
-  const unanswered = questionResults.filter(
-    (r) => r.status === "unanswered"
-  ).length;
+  const incorrect = questionResults.filter((r) => r.status === "incorrect").length;
+  const unanswered = questionResults.filter((r) => r.status === "unanswered").length;
 
   const container = document.getElementById("quiz-container");
   const resultBlock = document.createElement("div");
@@ -445,32 +440,30 @@ async function showScore() {
   `;
 
   container.appendChild(resultBlock);
-  // Firestore/form submission
+
   const urlParams = new URLSearchParams(window.location.search);
   const quizType = urlParams.get("uid") || "2976f868447f433bbec2a3a53c71ab99";
-  var courseNum = "not set";
-  const email = "not set";
-  const level = "not set";
-  const location = "not set";
-  const institution = "not set";
-  finalizeCurrentAttempt(currentUserId, quizName);
 
+  // ✅ Await this properly
   const docRef = doc(db, "users", currentUserId);
   const docSnap = await getDoc(docRef);
 
+  let courseNum = "not set";
+  let email = "not set";
+  let level = "not set";
+  let location = "not set";
+  let institution = "not set";
+
   if (docSnap.exists()) {
-    const data = docSnap.data();
-    courseNum=data.courseType;
-   email = docSnap.email || "not set";
-   level = docSnap.education || "not set";
-   location = docSnap.country || "not set";
-   institution = docSnap.institution || "not set";
-    console.log("courseType:", data.courseType || "not set");
-    } else {
-    console.warn("No coursenum doc found");
+    const userData = docSnap.data();
+    courseNum = userData.courseType || "not set";
+    email = userData.email || "not set";
+    level = userData.education || "not set";
+    location = userData.country || "not set";
+    institution = userData.institution || "not set";
   }
 
-
+  await finalizeCurrentAttempt(currentUserId, quizName);
 
   const form = document.getElementById("form");
   form.innerHTML = `
@@ -481,8 +474,9 @@ async function showScore() {
     <input type="hidden" name="level" value="${level}" />
     <input type="hidden" name="location" value="${location}" />
     <input type="hidden" name="institution" value="${institution}" />
-
   `;
+
+  // ✅ Dispatch after form fields are ready
   form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
 }
 
