@@ -63,44 +63,34 @@ let answerChecked = false;
 const questionResults = []; // { index: 0, status: 'correct' | 'incorrect' | 'unanswered' }
 let quizName;
 
-window.addEventListener("DOMContentLoaded", function () {
+window.addEventListener("DOMContentLoaded", async function () {
   const urlParams = new URLSearchParams(window.location.search);
-  const quizType = urlParams.get("uid") || "2976f868447f433bbec2a3a53c71ab99"; // fallback default
+  const quizType = urlParams.get("uid") || "2976f868447f433bbec2a3a53c71ab99";
 
   const url = `https://api.sketchfab.com/v3/models/${quizType}`;
 
-  fetch(url)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error ${response.status}`);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      quizName = data.name.replaceAll("/", "-");
-    })
-    .catch((error) => {
-      console.error("Error fetching model:", error);
-    });
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP error ${response.status}`);
 
-  console.log(quizName);
+    const data = await response.json();
+    quizName = data.name.replaceAll("/", "-");
+    console.log("quizname", quizName);
 
-  const iframe = document.getElementById("api-frame");
+    const iframe = document.getElementById("api-frame");
+    const client = new Sketchfab("1.12.1", iframe);
 
-  const client = new Sketchfab("1.12.1", iframe);
+    client.init(quizType, {
+      success: function (api) {
+        api.start();
 
-  client.init(quizType, {
-    success: function (api) {
-      api.start();
+        api.addEventListener("viewerready", async function () {
+          api.getAnnotationList(async function (err, annots) {
+            if (!err) {
+              annotations = annots;
+              emptyAnnotations(api);
+              makeQuestions();
 
-      api.addEventListener("viewerready", function () {
-        api.getAnnotationList(function (err, annots) {
-          if (!err) {
-            annotations = annots;
-            emptyAnnotations(api);
-            makeQuestions(); // create all questions initially
-
-            (async () => {
               let attemptData = null;
               const shouldReset = urlParams.get("reset") === "1";
 
@@ -108,9 +98,9 @@ window.addEventListener("DOMContentLoaded", function () {
                 attemptData = await loadCurrentAttempt(currentUserId, quizName);
 
                 if (attemptData?.questionOrder) {
-                  reorderQuestions(attemptData.questionOrder); // restore saved order
+                  reorderQuestions(attemptData.questionOrder);
                 } else {
-                  shuffleQuestions(questions); // only shuffle for new quizzes
+                  shuffleQuestions(questions);
                 }
               }
 
@@ -121,17 +111,22 @@ window.addEventListener("DOMContentLoaded", function () {
               }
 
               document.getElementById("quiz-container").style.display = "block";
-            })();
-          }
+            } else {
+              console.error("Error fetching annotations:", err);
+            }
+          });
         });
-      });
-    },
-    error: function () {
-      console.error("Sketchfab API error");
-    },
-    autostart: 1,
-    preload: 1,
-  });
+      },
+      error: function () {
+        console.error("Sketchfab API error");
+      },
+      autostart: 1,
+      preload: 1,
+    });
+  } catch (error) {
+    console.error("Failed to load quiz:", error);
+    document.getElementById("quiz-container").textContent = "Failed to load quiz data.";
+  }
 });
 
 function emptyAnnotations(api) {
@@ -471,7 +466,7 @@ async function showScore() {
 
   const form = document.getElementById("form");
   form.innerHTML = `
-    <input type="hidden" name="modelId" value="${quizType}" />
+    <input type="hidden" name="modelId" value="${quizName}" />
     <input type="hidden" name="user" value="${currentUserId}" />
     <input type="hidden" name="score" value="${score}/${totalQuestions}" />
     <input type="hidden" name="course" value="${courseNum}" />
