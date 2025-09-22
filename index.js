@@ -70,6 +70,7 @@ signUp.addEventListener("click", (event) => {
   const level = document.getElementById("educationLevel").value;
   const country = document.getElementById("country").value;
   const type = courseNumber.value;
+  const institution = document.getElementById("institution").value;
 
   createUserWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
@@ -80,6 +81,7 @@ signUp.addEventListener("click", (event) => {
         levelOfEducation: level,
         country: country,
         courseType: type,
+        institution: institution,
       });
 
       // ✅ Redirect to homepage after successful signup and login
