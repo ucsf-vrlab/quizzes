@@ -46,6 +46,7 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 let currentUserId = null;
+let api = null; // make it global
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
