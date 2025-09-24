@@ -57,6 +57,8 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 let annotations = [];
+let originalAnnotations = []; // 🔑 store originals
+
 let score = 0;
 const questions = [];
 let answerChecked = false;
@@ -88,6 +90,22 @@ window.addEventListener("DOMContentLoaded", async function () {
           api.getAnnotationList(async function (err, annots) {
             if (!err) {
               annotations = annots;
+              originalAnnotations = annots.map((a) => {
+                let title = a.title || a.name || "";
+                let content = "";
+
+                try {
+                  if (typeof a.content === "string") {
+                    let parsed = JSON.parse(a.content);
+                    content = parsed.raw || parsed.rendered || a.content;
+                  }
+                } catch (e) {
+                  content = a.content; // fallback if not JSON
+                }
+
+                return { title, content };
+              });
+
               emptyAnnotations(api);
               makeQuestions();
 
@@ -131,9 +149,41 @@ window.addEventListener("DOMContentLoaded", async function () {
 
 function emptyAnnotations(api) {
   annotations.forEach((_, i) => {
-    api.updateAnnotation(i, { title: "---", content: undefined });
+    api.updateAnnotation(i, { title: "---", content: "---" });
   });
 }
+
+let showingOriginals = false;
+
+document.getElementById("toggle-annotations").addEventListener("click", () => {
+  if (!api) return;
+
+  if (showingOriginals) {
+    // back to quiz mode
+    emptyAnnotations(api);
+    document.getElementById("toggle-annotations").textContent =
+      "Show Original Annotations";
+  } else {
+    // restore originals
+    originalAnnotations.forEach((annot, i) => {
+      api.updateAnnotation(
+        i,
+        {
+          title: annot.title,
+          content: annot.content,
+        },
+        (err) => {
+          if (err) console.error("Failed to restore annotation", i, err);
+        }
+      );
+    });
+
+    document.getElementById("toggle-annotations").textContent =
+      "Show Model Annotations";
+  }
+
+  showingOriginals = !showingOriginals;
+});
 
 function makeQuestions() {
   annotations.forEach((annot, i) => {
