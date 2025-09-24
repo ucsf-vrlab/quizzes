@@ -83,7 +83,9 @@ window.addEventListener("DOMContentLoaded", async function () {
     const client = new Sketchfab("1.12.1", iframe);
 
     client.init(quizType, {
-      success: function (api) {
+      success: function (apiInstance) {
+        api = apiInstance; // store globally
+
         api.start();
 
         api.addEventListener("viewerready", async function () {
