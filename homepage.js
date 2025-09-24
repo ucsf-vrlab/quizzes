@@ -165,7 +165,7 @@ document.getElementById("toggle-annotations").addEventListener("click", () => {
     // back to quiz mode
     emptyAnnotations(api);
     document.getElementById("toggle-annotations").textContent =
-      "Hide Model Annotations";
+      "Show Model Annotations";
   } else {
     // restore originals
     originalAnnotations.forEach((annot, i) => {
