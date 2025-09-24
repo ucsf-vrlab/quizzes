@@ -182,7 +182,7 @@ document.getElementById("toggle-annotations").addEventListener("click", () => {
     });
 
     document.getElementById("toggle-annotations").textContent =
-      "Show Model Annotations";
+      "Hide Model Annotations";
   }
 
   showingOriginals = !showingOriginals;
